@@ -40,7 +40,7 @@ Other points to consider:
 
 ## Performance
 
-One of the primary uses of this component is testing performance of the DOM binding. A monolithic version of the test is available [here](https://static.redsift.io/blog/performance-04-16/ZWMamp.html) or as a [Codepen here](http://codepen.io/rahulpowar/full/ZWMamp/). The times embedded are not fully representative, as they only measure the time spent in the data binding portion of the library. Developer tools e.g. `Chrome Timeline > Capture > JS/Paint`, provides a more complete picture. Typically a 2500 item data array binds in 8 to 13 ms in Chrome 49 and corresponds to a 25fps once layout, update and paint are done. Safari 9 has a JS time of 3 to 5 ms.
+One of the primary uses of this component is testing performance of the DOM binding. A monolithic version of the test is available [here](https://static.redsift.io/blog/performance-04-16/ZWMamp.html) or as a [Codepen here](http://codepen.io/rahulpowar/full/ZWMamp/). The times embedded are not fully representative, as they only measure the time spent in the data binding portion of the library. Developer tools e.g. `Chrome Timeline > Capture > JS/Paint`, provides a more complete picture. Typically a 2500 item data array binds in 8 to 13 ms in Chrome 49 and corresponds to a 25fps once layout, update and paint are done. Safari 9 has a JS time of 3 to 5 ms. Times on a mobile device are visibly slower but acceptable with 16 ms JS times on iOS 9.x with Mobile Safari.
 
 ## D3 v4 vs v3
 
