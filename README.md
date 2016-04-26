@@ -6,7 +6,8 @@
 
 ### Data Format
 
-	var data = [ 	[ 'a', 'b', ... ], 
+	var data = [ 	
+					[ 'a', 'b', ... ], 
 					[ '1', '2', ... ], 
 					... 
 				]
@@ -41,3 +42,6 @@ Other points to consider:
 
 One of the primary uses of this component is testing performance of the DOM binding. A monolithic version of the test is available [here](https://static.redsift.io/blog/performance-04-16/ZWMamp.html) or as a [Codepen here](http://codepen.io/rahulpowar/full/ZWMamp/). The times embedded are not fully representative, as they only measure the time spent in the data binding portion of the library. Developer tools e.g. `Chrome Timeline > Capture > JS/Paint`, provides a more complete picture. Typically a 2500 item data array binds in 8 to 13 ms in Chrome 49 and corresponds to a 25fps once layout, update and paint are done. Safari 9 has a JS time of 3 to 5 ms.
 
+## D3 v4 vs v3
+
+One interesting observation when using the D3 v4 Alpha is that the performance averages improve by ~15% with comparable standard deviations. [D3.js v4 Alpha](http://codepen.io/rahulpowar/full/ZWMamp/) vs [D3.js v3 Release](http://codepen.io/rahulpowar/full/VaGBaz/), note a minor change to the `d3.timer` API between v3 and v4.
