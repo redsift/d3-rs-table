@@ -18,7 +18,7 @@ In this model, the first entry is the first row of the table.
 
 Assuming data compatible with the layout above is available:
 
-	var tbl = htmlTable();
+	var tbl = d3_rs_table.html();
 	d3.select('body').datum(data).call(tbl);	
 
 Updating is simply mutating the `data` array and calling `d3.select('body').datum(data).call(tbl)` with the same reusable component instance.
