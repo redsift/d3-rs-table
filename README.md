@@ -1,6 +1,6 @@
 # d3-rs-table
 
-`d3-rs-table` is a component that can map a 2D matrix to an old school `table/tr/td` layout. It serves as a simple example demonstrating the implementation of our reusable chart model for D3 at [Redsift](https://redsift.io/?utm_source=github&utm_medium=readme&utm_campaign=oss) and a baseline for comparing view/data binding approaches for other frameworks. Note, this does not utilise `d3.transition()`.
+`d3-rs-table` is a component that can map a 2D matrix to an old school `table/tr/td` layout. It serves as a simple example demonstrating the implementation of our reusable chart model for D3 at [Redsift](https://redsift.io/?utm_source=github&utm_medium=readme&utm_campaign=oss) and a baseline for comparing view/data binding approaches for other frameworks. Note, this does not utilise `d3.transition()`. This component is dependent on D3 v4 (Alpha).
 
 ## Usage
 

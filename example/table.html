@@ -1,0 +1,37 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" 
+    href="https://static.redsift.io/ui/latest/css/redsift-xtra.min.css">
+    
+  <style>
+	body {
+        margin: 1em;
+        font-family: 'Source Code Pro', monospace;
+	}
+  </style>  
+  </head>
+  <body>
+    <h1>Table Demo</h2>  
+    <div id="tbl"></div>
+    
+    <script src="https://d3js.org/d3.v4.0.0-alpha.29.min.js"></script>
+    <script src="../build/d3-rs-table.umd-es15.min.js"></script>
+    <script>
+        
+    'use strict';
+
+    var demo = [
+        ['Start', 'End', 'Duration'],
+        [new Date(12345), new Date(56887), '3 months, 5 days'],
+        ['Distinct', 'People', 'Domains'],
+        [undefined, 50, 3],
+        ['Time spent', 'Reading', 'Writing'],
+        [undefined, '89 hours', '3 days, 6 hours'],
+    ];    
+
+    var table = d3_rs_table.html();
+    d3.select('#tbl').datum(demo).call(table);
+    
+    </script>
+  </body>
+</html>

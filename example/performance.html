@@ -1,0 +1,173 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" 
+    href="https://static.redsift.io/ui/latest/css/redsift-xtra.min.css">
+    
+  <style>
+    body {
+        margin: 1em;
+        font-family: 'Source Code Pro', monospace;
+    }
+
+    .result {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-around;
+        padding-bottom: 1em;
+    }
+  </style>  
+  </head>
+  <body>
+    <div id="regular" class="result">
+    <div>
+        <h3>Regular Arrays</h3>
+    </div>  
+    <div>
+        <h4>Average (ms)</h4>
+        <div class="avg">-</div>
+    </div>  
+    <div>
+        <h4>Std. Deviation</h4>
+        <div class="std">-</div>
+    </div> 
+    <div>
+        <h4>CSV</h4>
+        <div class="csv"></div>
+    </div>   
+    </div>
+    <div id="ragged" class="result">
+    <div>
+        <h3>Ragged Arrays</h3>
+    </div>  
+    <div>
+        <h4>Average (ms)</h4>
+        <div class="avg">-</div>
+    </div>  
+    <div>
+        <h4>Std. Deviation</h4>
+        <div class="std">-</div>
+    </div> 
+    <div>
+        <h4>CSV</h4>
+        <div class="csv"></div>
+    </div>   
+    </div>
+    <div id="tbl">
+    </div>
+    
+    <script src="https://d3js.org/d3.v4.0.0-alpha.29.min.js"></script>
+    <script src="../build/d3-rs-table.umd-es15.min.js"></script>
+    <script>
+    'use strict';
+
+    function makeRandom(rowso, colso, rng) {
+    var rows = rowso;
+    if (rng === true) {
+        rows = Math.round(Math.random() * rowso);
+    }
+    var r = new Array(rows);
+    
+    var i = 0, cells = 0;
+    while (i<rows) { 
+        var cols = colso;
+        if (rng === true) {
+        cols = Math.round(Math.random() * colso);
+        }
+        var c = new Array(cols);
+        
+        var ii = 0;
+        while (ii<cols) { 
+        c[ii] = Math.random();
+        cells++;
+        ii++;
+        }
+        
+        r[i] = c; 
+        i++; 
+    }
+    
+    return {c: cells, a: r};
+    }
+
+    var average = (data) => data.reduce((sum, value) => sum + value, 0) / data.length;
+
+    function stats(values) {
+    var avg = average(values);
+
+    var squareDiffs = values.map(function(value) {
+        var diff = value - avg;
+        return diff * diff;
+    });
+    
+    return { avg: avg, std: Math.sqrt(average(squareDiffs)) };
+    }
+
+    function results(ui, filename, array) {
+    var stat = stats(array.slice(1, array.length).map((d) => d[1]));
+    ui.select('.avg').text(stat.avg.toFixed(3));
+    ui.select('.std').text(stat.std.toFixed(3));
+    
+    var link = ui.select('.csv').selectAll('a').data([ array ]);
+    link.enter().append('a');
+    link.attr('download', filename + '-' + Date.now()).attr('href', resultToObject).text('Download');
+    }
+
+    function resultToObject(array) {
+    var url =  window.URL || window.webkitURL;
+    var csv = array.map((r) => r.join(',')).join('\n');
+    return url.createObjectURL(new Blob([ csv ], { type: 'text/csv' }));
+    }
+
+    function load(){
+    return new Promise(function(ok, _){
+        window.onload = ok;
+    });
+    }
+
+    function time(el, tbl, sz, runs, rng) {
+    return new Promise(function (ok, ko) {
+        var results = new Array(runs + 1);
+        results[0] = [ '# run', 'ms', 'rows cfg='+(sz*sz) ];
+        var i = 0;
+        var t = d3.timer(function() {
+
+        var test = makeRandom(sz, sz, rng);
+
+        var _start = performance.now();
+
+        // timed function
+        el.datum(test.a).call(tbl); 
+
+        var _end = performance.now() - _start;
+        i++;
+        results[i] = [i, _end, test.c];
+        
+        var done = (i > runs);
+        if (done) {
+            ok(results);
+            t.stop();
+        }
+        });
+    });
+    }
+
+    /* 
+    * ---------------------------------------
+    * Test Implementation
+    * ---------------------------------------
+    */
+    var size = 50,
+        runs = 100;
+
+    var el = d3.select('#tbl');
+    var tbl = d3_rs_table.html(true).text((d) => d ? d.toFixed(2) : null);
+
+    load()
+    .then(() => time(el, tbl, size, runs, false))
+    .then(results.bind(results, d3.select('#regular'), 'regular'))
+    .then(() => time(el, tbl, size, runs, true))
+    .then(results.bind(results, d3.select('#ragged'), 'ragged'));
+    
+    </script>
+  </body>
+</html>
