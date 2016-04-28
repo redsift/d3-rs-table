@@ -1,6 +1,6 @@
 export {
   version
-} from "./build/package";
+} from "./package.js";
 
 
 export {

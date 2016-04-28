@@ -1,6 +1,6 @@
 {
   "name": "d3-rs-table",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Displays a 2D array as a HTML table.",
   "keywords": [
     "table",
@@ -21,9 +21,10 @@
     "url": "https://github.com/redsift/d3-rs-table.git"
   },
   "scripts": {
-    "build": "rm -rf build && mkdir build && json2module package.json > build/package.js && rollup -c -g d3-selection:d3 -n d3_rs_table -o build/d3-rs-table.umd-es15.js && uglifyjs build/d3-rs-table.umd-es15.js -c -m -o build/d3-rs-table.umd-es15.min.js",
+    "build": "rm -rf build && mkdir build && cp package.js build/package.js && rollup -c -g d3-selection:d3 -n d3_rs_table -o build/d3-rs-table.umd-es15.js && uglifyjs build/d3-rs-table.umd-es15.js -c -m -o build/d3-rs-table.umd-es15.min.js",
     "pretest": "npm run build",
     "test": "tape 'test/**/*-test.js' && eslint index.js src",
+    "version": "json2module package.json > package.js",
     "prepublish": "npm run test"
   },
   "dependencies": {

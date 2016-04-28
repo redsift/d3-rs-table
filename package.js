@@ -1,0 +1,12 @@
+export var name = "d3-rs-table";
+export var version = "0.0.2";
+export var description = "Displays a 2D array as a HTML table.";
+export var keywords = ["table","redsift","d3","visualization"];
+export var homepage = "https://github.com/redsift/d3-rs-table";
+export var license = "MIT";
+export var author = {"name":"Rahul Powar","url":"https://medium.com/@rahulpowar"};
+export var main = "build/d3-rs-table.umd-es15.js";
+export var repository = {"type":"git","url":"https://github.com/redsift/d3-rs-table.git"};
+export var scripts = {"build":"rm -rf build && mkdir build && cp package.js build/package.js && rollup -c -g d3-selection:d3 -n d3_rs_table -o build/d3-rs-table.umd-es15.js && uglifyjs build/d3-rs-table.umd-es15.js -c -m -o build/d3-rs-table.umd-es15.min.js","pretest":"npm run build","test":"tape 'test/**/*-test.js' && eslint index.js src","version":"json2module package.json > package.js","prepublish":"npm run test"};
+export var dependencies = {"d3-selection":"~0.7.0"};
+export var devDependencies = {"eslint":"^2.8.0","babel-preset-es2015-rollup":"^1.1.0","jsdom":"~8.4.0","json2module":"~0.0.3","rollup":"^0.26","rollup-plugin-babel":"^2.4.0","rollup-plugin-includepaths":"^0.1.2","tape":"4","uglify-js":"2"};
