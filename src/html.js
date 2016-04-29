@@ -1,13 +1,9 @@
 import { select } from "d3-selection";
 
-var _TABLE_ID = 0xffa00;
-
 // headerRow0 = true, header is the first row
 // headerRow0 = false, header is the first col
 // headerRow0 = null/undef, no header
-export default function(headerRow0) {
-  _TABLE_ID = _TABLE_ID + 1;
-  var id = _TABLE_ID;
+export default function(headerRow0, id) {
   
   var classed = 'html-table',
       text = (d) => d;
@@ -17,9 +13,10 @@ export default function(headerRow0) {
     
     selection.each(function(data) {
       var parent = select(this);
-      var el = parent.select('#' + _impl.id());
+
+      var el = parent.select('table' + (id ?  '#' + id : ''));
       if (el.empty()) {
-        el = parent.append('table').attr('id', _impl.id());
+        el = parent.append('table').attr('id', id);
       }
       el.attr('class', classed);
       
@@ -55,11 +52,11 @@ export default function(headerRow0) {
       }
     });
   }
-  
+
   _impl.id = function() {
-    return 'ht-guid-' + id;
+    return id;
   };
-  
+    
   _impl.classed = function(value) {
     return arguments.length ? (classed = value, _impl) : classed;
   };
