@@ -160,7 +160,7 @@
         runs = 100;
 
     var el = d3.select('#tbl');
-    var tbl = d3_rs_table.html(true).text((d) => d ? d.toFixed(2) : null);
+    var tbl = d3_rs_table.html().text((d) => d ? d.toFixed(2) : null).headerRow0(true);
 
     load()
     .then(() => time(el, tbl, size, runs, false))

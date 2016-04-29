@@ -3,9 +3,10 @@ import { select } from "d3-selection";
 // headerRow0 = true, header is the first row
 // headerRow0 = false, header is the first col
 // headerRow0 = null/undef, no header
-export default function(headerRow0, id) {
+export default function html(id) {
   
   var classed = 'html-table',
+      headerRow0 = null,
       text = (d) => d;
       
   function _impl(context) {
@@ -25,14 +26,13 @@ export default function(headerRow0, id) {
       col.exit().remove();
 
       col = col.enter().append('tr').merge(col);
-
                     
       if (headerRow0 === true) {
         var _cells = function(type, fn) {
           var arow = col.selectAll(type)
               .data(fn);
-          arow.enter().append(type);
           arow.exit().remove();
+          arow = arow.enter().append(type).merge(arow);
           arow.text(text);
         }
         
@@ -61,9 +61,33 @@ export default function(headerRow0, id) {
     return arguments.length ? (classed = value, _impl) : classed;
   };
   
+  _impl.headerRow0 = function(value) {
+    return arguments.length ? (headerRow0 = value, _impl) : headerRow0;
+  };
+  
   _impl.text = function(value) {
     return arguments.length ? (text = value, _impl) : text;
   };  
   
   return _impl;
+}
+
+// e.g. d3_rs_table.display(d3.select('#tbl'), demo, null, null, null, { headerRow0: true });
+export function display(selection, data, width, height, scale, opts) {
+    var table = html();
+    
+    if (selection.datum === undefined) {
+        selection = d3.select(selection);
+    }
+    
+    Object.keys(opts).forEach(function(n) {
+        var f = table[n];
+        if (f === undefined) {
+            console.warn('property ' + n + ' is not defined');
+        } else {
+            table = f.bind(table)(opts[n]);
+        }
+    });
+    
+    selection.datum(data).call(table);
 }

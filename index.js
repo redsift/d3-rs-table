@@ -4,5 +4,6 @@ export {
 
 
 export {
-  default as html
+  default as html,
+  display as display
 } from "./src/html";

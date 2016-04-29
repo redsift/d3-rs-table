@@ -28,9 +28,18 @@
         ['Time spent', 'Reading', 'Writing'],
         [undefined, '89 hours', '3 days, 6 hours'],
     ];    
-
-    var table = d3_rs_table.html(null, 'tbl-42');
+    
+    var table = d3_rs_table.html();
+    
     d3.select('#tbl').datum(demo).call(table);
+    
+    setTimeout(function() {
+      // modify the struct and rebind
+      demo.pop();
+      demo[0] = [ 'ragged', 'array' ];
+      
+      d3.select('#tbl').datum(demo).call(table);
+    }, 1000);
     
     </script>
   </body>
