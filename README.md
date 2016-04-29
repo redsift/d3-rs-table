@@ -23,13 +23,19 @@ Assuming data compatible with the layout above is available:
 
 Updating is simply mutating the `data` array and calling `d3.select('body').datum(data).call(tbl)` with the same reusable component instance.
 
+## Usage
+
+`headerRow0` -> true, header is the first row. false, header is the first col. null/undefined, no header.
+
+`text` -> data formatting function.
+
 ## Comparing
 
 Any fair comparison against this component in other presentation frameworks should include the following features:
 
 - Ability to change the dimensions of the data array and rebind the presentation.
 - Support ragged arrays via the update flow i.e. arrays where the rows of the array may be of different sizes and have this reflect in the generated DOM.
-- Ability to customise the text presentation on demand via a callback. E.g. in the example, the instance of the component constructed uses a function to format the number to 2 decimal places via `var tbl = htmlTable(true).text((d) => d.toFixed(2))`.
+- Ability to customise the text presentation on demand via a callback. E.g. in the example, the instance of the component constructed uses a function to format the number to 2 decimal places via `var tbl = htmlTable().text((d) => d.toFixed(2))`.
 - Ability to optionally render the first row or first column of the data set as a `th` element instead of a `td`. While style can be achieved using CSS, this demonstrates the ability to express sophisticated DOM element generation rules.
 
 Other points to consider:
