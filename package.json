@@ -1,6 +1,6 @@
 {
   "name": "d3-rs-table",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Displays a 2D array as a HTML table using D3v4.",
   "keywords": [
     "table",
