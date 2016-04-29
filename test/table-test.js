@@ -39,7 +39,7 @@ tape("table() generates cells", function(t) {
 tape("table() generates th cells 1st row", function(t) {
     var document = global.document = jsdom.jsdom("<div id='test'></div>");
     try {   
-        var tbl = table.html(true);
+        var tbl = table.html().headerRow0(true);
 
         var el = d3.select('#test');
         var data = [ [ 'a', 'b' ], [ 1, '2' ], [ 'ragged' ] ];
@@ -55,7 +55,7 @@ tape("table() generates th cells 1st row", function(t) {
 tape("table() generates th cells 1st col", function(t) {
     var document = global.document = jsdom.jsdom("<div id='test'></div>");
     try {   
-        var tbl = table.html(false);
+        var tbl = table.html().headerRow0(false);
 
         var el = d3.select('#test');
         var data = [ [ 'a', 'b' ], [ 1, '2' ], [ 'ragged' ] ];
