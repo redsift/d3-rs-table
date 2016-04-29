@@ -73,21 +73,17 @@ export default function html(id) {
 }
 
 // e.g. d3_rs_table.display(d3.select('#tbl'), demo, null, null, null, { headerRow0: true });
-export function display(selection, data, width, height, scale, opts) {
+export function display(d3Selection, data, width, height, scale, opts) {
     var table = html();
-    
-    if (selection.datum === undefined) {
-        selection = d3.select(selection);
-    }
     
     Object.keys(opts).forEach(function(n) {
         var f = table[n];
         if (f === undefined) {
-            console.warn('property ' + n + ' is not defined');
+            // console.warn('property ' + n + ' is not defined');
         } else {
             table = f.bind(table)(opts[n]);
         }
     });
     
-    selection.datum(data).call(table);
+    d3Selection.datum(data).call(table);
 }
