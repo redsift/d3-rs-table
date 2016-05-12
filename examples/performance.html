@@ -1,8 +1,8 @@
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" 
-    href="https://static.redsift.io/ui/latest/css/redsift-xtra.min.css">
-    
+  <link rel="stylesheet" type="text/css"
+    href="https://static.redsift.io/ui/latest/css/full/redsift-xtra.min.css">
+
   <style>
     body {
         margin: 1em;
@@ -15,46 +15,46 @@
         justify-content: space-around;
         padding-bottom: 1em;
     }
-  </style>  
+  </style>
   </head>
   <body>
     <div id="regular" class="result">
     <div>
         <h3>Regular Arrays</h3>
-    </div>  
+    </div>
     <div>
         <h4>Average (ms)</h4>
         <div class="avg">-</div>
-    </div>  
+    </div>
     <div>
         <h4>Std. Deviation</h4>
         <div class="std">-</div>
-    </div> 
+    </div>
     <div>
         <h4>CSV</h4>
         <div class="csv"></div>
-    </div>   
+    </div>
     </div>
     <div id="ragged" class="result">
     <div>
         <h3>Ragged Arrays</h3>
-    </div>  
+    </div>
     <div>
         <h4>Average (ms)</h4>
         <div class="avg">-</div>
-    </div>  
+    </div>
     <div>
         <h4>Std. Deviation</h4>
         <div class="std">-</div>
-    </div> 
+    </div>
     <div>
         <h4>CSV</h4>
         <div class="csv"></div>
-    </div>   
+    </div>
     </div>
     <div id="tbl">
     </div>
-    
+
     <script src="https://d3js.org/d3.v4.0.0-alpha.29.min.js"></script>
     <script src="/d3-rs-table.umd-es15.min.js"></script>
     <script>
@@ -66,26 +66,26 @@
         rows = Math.round(Math.random() * rowso);
     }
     var r = new Array(rows);
-    
+
     var i = 0, cells = 0;
-    while (i<rows) { 
+    while (i<rows) {
         var cols = colso;
         if (rng === true) {
         cols = Math.round(Math.random() * colso);
         }
         var c = new Array(cols);
-        
+
         var ii = 0;
-        while (ii<cols) { 
+        while (ii<cols) {
         c[ii] = Math.random();
         cells++;
         ii++;
         }
-        
-        r[i] = c; 
-        i++; 
+
+        r[i] = c;
+        i++;
     }
-    
+
     return {c: cells, a: r};
     }
 
@@ -98,7 +98,7 @@
         var diff = value - avg;
         return diff * diff;
     });
-    
+
     return { avg: avg, std: Math.sqrt(average(squareDiffs)) };
     }
 
@@ -106,7 +106,7 @@
     var stat = stats(array.slice(1, array.length).map((d) => d[1]));
     ui.select('.avg').text(stat.avg.toFixed(3));
     ui.select('.std').text(stat.std.toFixed(3));
-    
+
     var link = ui.select('.csv').selectAll('a').data([ array ]);
     link.enter().append('a');
     link.attr('download', filename + '-' + Date.now()).attr('href', resultToObject).text('Download');
@@ -136,12 +136,12 @@
         var _start = performance.now();
 
         // timed function
-        el.datum(test.a).call(tbl); 
+        el.datum(test.a).call(tbl);
 
         var _end = performance.now() - _start;
         i++;
         results[i] = [i, _end, test.c];
-        
+
         var done = (i > runs);
         if (done) {
             ok(results);
@@ -151,7 +151,7 @@
     });
     }
 
-    /* 
+    /*
     * ---------------------------------------
     * Test Implementation
     * ---------------------------------------
@@ -167,7 +167,7 @@
     .then(results.bind(results, d3.select('#regular'), 'regular'))
     .then(() => time(el, tbl, size, runs, true))
     .then(results.bind(results, d3.select('#ragged'), 'ragged'));
-    
+
     </script>
   </body>
 </html>
