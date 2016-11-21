@@ -1,0 +1,107 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css"
+    href="https://static.redsift.io/ui/latest/css/full/redsift-xtra.min.css">
+
+  <style>
+	body {
+    margin: 1em;
+    font-family: 'Source Code Pro', monospace;
+	}
+
+  table {
+    width: 100%;
+  }
+  th {
+    cursor: hand;
+  }
+  td > img {
+    vertical-align: middle;
+    width: 64px;
+    margin-left: 1em;
+  }
+  </style>
+  </head>
+  <body>
+    <h1>Advanced Table Demo</h2>
+    <div id="tbl"></div>
+
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="/d3-rs-table.umd-es2015.min.js"></script>
+    <script>
+
+    'use strict';
+
+    var demo = [
+        [{ text: 'Start', header: true}, { text: 'End', header: true}, { text: 'Duration', header: true }],
+        [{ text: 'A' }, { text: 'A' }, 10],
+        [{ text: 'B', icon: 'https://static.redsift.io/assets/ui-rs-core/icons/-rs-icon-redsift-cloud.svg', alt: 'Red Sift' }, { text: 'C' }, null],
+        [{ text: 'C' }, { text: '1' }, 3],
+        [{ text: 'D' }, { text: 'B' }, 'Writing'],
+        [{ text: 'E', icon: 'https://static.redsift.io/assets/ui-rs-core/icons/-rs-icon-redsift-cloud.svg', alt: 'Alt Red Sift' }, { text: 'B' }, '3 days, 6 hours'],
+    ];
+
+    var order = {
+
+    };
+    function resort(d, idx) {
+      let current = order[idx];
+
+      if (current) {
+        current = false;
+      } else {
+        current = true;
+      } 
+      order = {};
+      order[idx] = current;
+
+      let data = d.slice(1);
+      data.sort(function compare(a, b) {
+        let aV = null;
+        let bV = null;
+        if (current) {
+          let t = b;
+          b = a;
+          a = t;
+        }
+        if (idx < a.length) aV = a[idx];
+        if (idx < b.length) bV = b[idx];
+        
+        if (aV == null && bV == null) return 0;
+        if (aV == null) return -1;
+        if (bV == null) return 1;
+        
+        if (aV.text < bV.text) return -1;
+        if (aV.text > bV.text) return 1;
+        return 0;
+      });
+
+      return d.slice(0, 1).concat(data);
+    }
+    var table = d3_rs_table.html()
+                            .headerRow0(true)
+                            .display(function (s) {
+                              s.text(d => d ? d.text : '-');
+                              var img = s.selectAll('img').data(d => (console.log(d), (d && d.icon) ? [ d ]: []));
+                              img = img.enter().append('img').merge(img);
+                              img.attr('src', d => d.icon);
+                              img.attr('title', d => d.alt);
+                            });
+
+    table.onClick(function (d,i) {
+                    if (d && d.header) {
+                      demo = resort(demo, i);
+                      draw(demo, table);
+                    }
+                  });
+
+
+    function draw(d, t) {
+      d3.select('#tbl').datum(d).call(t);
+    }
+
+    draw(demo, table);
+
+    </script>
+  </body>
+</html>
