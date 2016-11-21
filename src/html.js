@@ -5,35 +5,49 @@ import { select } from "d3-selection";
 // headerRow0 = null/undef, no header
 export default function html(id) {
   
-  var classed = 'html-table',
+  let classed = 'html-table',
       headerRow0 = null,
-      text = (d) => d;
+      text = (d) => d,
+      display = null,
+      onClick = null;
       
   function _impl(context) {
-    var selection = context.selection ? context.selection() : context;
-    
-    selection.each(function(data) {
-      var parent = select(this);
+    let selection = context.selection ? context.selection() : context;
 
-      var el = parent.select('table' + (id ?  '#' + id : ''));
+    let _display = display;
+    if (_display == null) {
+      _display = function (selection) {
+        selection.text(text);
+      }
+    }
+
+    selection.each(function(data) {
+      let parent = select(this);
+
+      let el = parent.select('table' + (id ?  '#' + id : ''));
       if (el.empty()) {
         el = parent.append('table').attr('id', id);
       }
       el.attr('class', classed);
       
-      var col = el.selectAll('tr').data(data);
+      let col = el.selectAll('tr').data(data);
       
       col.exit().remove();
 
       col = col.enter().append('tr').merge(col);
                     
       if (headerRow0 === true) {
-        var _cells = function(type, fn) {
-          var arow = col.selectAll(type)
-              .data(fn);
+        let _cells = function(type, fn) {
+          let arow = col.selectAll(type).data(fn);
+
           arow.exit().remove();
-          arow = arow.enter().append(type).merge(arow);
-          arow.text(text);
+          let newArow = arow.enter().append(type);
+          if (onClick) {
+            newArow.on('click', onClick);
+          }
+
+          arow = newArow.merge(arow);
+          arow.call(_display);
         }
         
         _cells('th', (r, i) => (i === 0) ? r : []);
@@ -43,12 +57,15 @@ export default function html(id) {
         
         row.exit().remove();
         
-        row = row.enter()
+        let newRow = row.enter()
           .append((_, i) => (headerRow0 === false && i === 0) ? document.createElement('th') : document.createElement('td'))
-          .attr('class', 'cell')
-          .merge(row);
+          .attr('class', 'cell');
+        if (onClick) {
+          newRow.on('click', onClick);
+        }
         
-        row.text(text);       
+        row = newRow.merge(row);
+        row.call(_display);       
       }
     });
   }
@@ -69,6 +86,14 @@ export default function html(id) {
     return arguments.length ? (text = value, _impl) : text;
   };  
   
+  _impl.display = function(value) {
+    return arguments.length ? (display = value, _impl) : display;
+  };  
+
+  _impl.onClick = function(value) {
+    return arguments.length ? (onClick = value, _impl) : onClick;
+  };  
+
   return _impl;
 }
 
